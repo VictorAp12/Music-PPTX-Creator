@@ -1,0 +1,11 @@
+musicas_exemplo.csv
+venv
+__pycache__
+app/__pycache__
+gui/__pycache__
+gui/dialogs/__pycache__
+gui/main_window/__pycache__
+gui/pages/__pycache__
+gui/slide_adjusts
+gui/widgets/__pycache__
+utils/__pycache__
