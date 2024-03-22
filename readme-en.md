@@ -18,7 +18,8 @@ Change the expired or unavailable Genius API key.
 </div>
 
 ### O projeto tem 3 páginas:
--The first page searches for only one song;
+
+- The first page searches for only one song;
 <img src="https://github.com/VictorAp12/Music-PPTX-Creator/assets/148372228/2a076d16-4034-4eec-8be5-e1680c79beb0" width="500"/>
 
 - The second page searches for multiple songs by search query or by a structured CSV file: [Example](https://github.com/VictorAp12/Music-PPTX-Creator/assets/148372228/6cab8e9f-1557-40aa-861f-b222c625ee5e)
