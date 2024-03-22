@@ -203,7 +203,7 @@ class MenuBar(QMenuBar):
         """
         Opens the git hub project in the web browser.
         """
-        webbrowser.open("https://github.com/VictorAp12/fazer-slides-de-musica")
+        webbrowser.open("https://github.com/VictorAp12/Music-PPTX-Creator")
 
     def _open_creator_git_hub(self) -> None:
         """
@@ -225,7 +225,7 @@ class MenuBar(QMenuBar):
         self.slide_style_menu = QMenu("Selecionar Estilo de Slides", self)
         self.slide_style_menu.setToolTipsVisible(True)
         self.slide_style_menu.setStyleSheet(
-            "QToolTip {background-color: dark; color: white;border: black solid 1px}"
+            "QToolTip {background-color: dark; color: white; border: black solid 1px}"
         )
 
         self.addMenu(self.slide_style_menu)
@@ -255,7 +255,7 @@ class MenuBar(QMenuBar):
         self.change_language_menu = QMenu("Selecionar Idioma", self)
         self.change_language_menu.setToolTipsVisible(True)
         self.change_language_menu.setStyleSheet(
-            "QToolTip {background-color: dark; color: white;border: black solid 1px}"
+            "QToolTip {background-color: dark; color: white; border: black solid 1px}"
         )
 
         self.addMenu(self.change_language_menu)

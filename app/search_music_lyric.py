@@ -37,7 +37,6 @@ def search_lyrics_on_genius(
     :param singer: The name of the singer to search for.
 
     :raises: QtWidgets.QMessageBox if no lyrics are found or if there is an error while searching.
-    :raises: ValueError if an error occurs when parsing the lyrics.
 
     :return found_music (str): The name of the found music.
     :return found_singer (str): The name of the found singer.
@@ -100,7 +99,7 @@ def search_lyrics_on_genius(
 
     music_lyric = genius.lyrics(result["id"]).split("\n\n")  # type: ignore
 
-    music_items = range(len(music_lyric) + 1)
+    music_items = range(len(music_lyric))
 
     for i in music_items:
         if re.search(r"(you might also like|embed|\d{2}embed)", music_lyric[i].lower()):
@@ -111,11 +110,21 @@ def search_lyrics_on_genius(
             )
 
             try:
-                if i < len(music_lyric) - 1:
-                    bloc1, bloc2 = music_lyric[i].split("\n\n")
+                if i < len(music_lyric):
+                    result = music_lyric[i].split("\n\n")
+
+                    bloc1 = result[0]
+
+                    if len(result) > 1:
+                        bloc2 = result[1]
+                    else:
+                        bloc2 = ""
+
                     music_lyric.remove(music_lyric[i])
                     music_lyric.insert(i, bloc1)
-                    music_lyric.insert(i + 1, bloc2)
+
+                    if bloc2:
+                        music_lyric.insert(i + 1, bloc2)
 
             except Exception as exc:
                 msg_box = QMessageBox()
@@ -130,11 +139,7 @@ def search_lyrics_on_genius(
                     ),
                 )
 
-                raise ValueError(
-                    "Erro na divisão dos blocos"
-                    if language == "pt"
-                    else "Error in block division"
-                ) from exc
+                return None
 
         # if its the first paragraph and it has a line break
         # and it has a number its a header of the song so it needs to be removed

@@ -233,8 +233,8 @@ class PageOne(QWidget):
             )
 
             self.background_image.setToolTip(
-                "Clique para abrir o seletor de arquivo ou clique com \
-                botão direito do mouse para abrir a imagem em tela inteira"
+                "Clique para abrir o seletor de arquivo ou clique com "
+                "botão direito do mouse para abrir a imagem em tela inteira"
             )
 
             self.transparency_slider_label.setText(
@@ -246,8 +246,8 @@ class PageOne(QWidget):
             )
 
             self.transparency_slider.setToolTip(
-                f"Opacidade selecionada: {self.transparency_slider.value()}\n \
-                Role a barra para alterar"
+                f"Opacidade selecionada: {self.transparency_slider.value()}\n"
+                "Role a barra para alterar"
             )
 
             self.transparency_slider.valueChanged.connect(

@@ -20,6 +20,7 @@ class ImageLabel(QLabel):
     """
     This class is used to create the image label.
     """
+
     def __init__(self) -> None:
         super().__init__()
         self.setAcceptDrops(True)
@@ -35,6 +36,7 @@ class ImageLabel(QLabel):
         )
 
         self.setScaledContents(True)
+        self.setMinimumSize(235, 160)
         self.setMaximumSize(500, 300)
 
         self.img_path = None

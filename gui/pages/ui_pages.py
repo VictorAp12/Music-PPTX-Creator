@@ -387,7 +387,7 @@ class UiPagesWidget(object):
                 active_page,
                 (
                     "Nome de arquivo inválido, mude o nome da música e cantor(a).\n"
-                    'tire os caracteres como /, , :, *, ?, ", <, >, |, and ~'
+                    'Tire os caracteres como /, , :, *, ?, ", <, >, |, and ~'
                     if language == "pt"
                     else "Invalid file name, change the music name and singer.\n"
                     'Remove characters like /, , :, *, ?, ", <, >, |, and ~'

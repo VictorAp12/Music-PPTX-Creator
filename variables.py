@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT_DIR = Path(__file__).parent
 ASSETS_DIR = ROOT_DIR / "assets"
-WINDOW_ICON_PATH = ASSETS_DIR / "fazerpowerpoints_icon.png"
+WINDOW_ICON_PATH = ASSETS_DIR / "Music_PPTX_Creator_icon.png"
 
 # Colors
 PRIMARY_COLOR = "#1e81b0"

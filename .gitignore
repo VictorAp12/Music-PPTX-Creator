@@ -1,5 +1,10 @@
 musicas_exemplo.csv
+query_test.txt
 venv
+files
+app/images
+app/slides styles
+settings/.env
 __pycache__
 app/__pycache__
 gui/__pycache__

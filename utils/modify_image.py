@@ -38,11 +38,11 @@ def modify_image(
 
         if imagem_bg.width + imagem_bg.height > 2000:
             status_bar_label.setText(
-                "Alterando opacidade da imagem... Isso pode demorar um pouco, \
-                a imagem é muito grande"
+                "Alterando opacidade da imagem... Isso pode demorar um pouco, "
+                "a imagem é muito grande"
                 if language == "pt"
-                else "Changing image opacity... It may take a while, \
-                the image size is too big"
+                else "Changing image opacity... It may take a while, "
+                "the image size is too big"
             )
 
     for y in range(imagem_bg.height):

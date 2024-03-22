@@ -258,8 +258,8 @@ class PageInsertManually(QWidget):
             )
 
             self.text_edit.setToolTip(
-                "Insire a letra da musica, para separar os slides \
-                deixe uma linha em branco como no exemplo"
+                "Insire a letra da musica, para separar os slides "
+                "deixe uma linha em branco como no exemplo"
             )
 
             self.background_image_label.setText(
@@ -273,8 +273,8 @@ class PageInsertManually(QWidget):
             )
 
             self.background_image.setToolTip(
-                "Clique para abrir o seletor de arquivo ou clique com o \
-                direito para abrir a imagem em tela inteira"
+                "Clique para abrir o seletor de arquivo ou clique com o "
+                "direito para abrir a imagem em tela inteira"
             )
 
             self.transparency_slider_label.setText(
@@ -286,8 +286,8 @@ class PageInsertManually(QWidget):
             )
 
             self.transparency_slider.setToolTip(
-                f"Opacidade selecionada: {self.transparency_slider.value()}\n \
-                Role a barra para alterar"
+                f"Opacidade selecionada: {self.transparency_slider.value()}\n"
+                "Role a barra para alterar"
             )
 
             self.transparency_slider.valueChanged.connect(
@@ -354,8 +354,8 @@ class PageInsertManually(QWidget):
             )
 
             self.text_edit.setToolTip(
-                "Enter the text of the music, separate the slides \
-                with a blank line as in the example"
+                "Enter the text of the music, separate the slides "
+                "with a blank line as in the example"
             )
             self.background_image.setText(
                 "\n\n Drag the slide background image here \n\n"

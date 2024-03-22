@@ -243,18 +243,18 @@ class PageMany(QWidget):
                     "Buscar Músicas Digitando o Nome e Cantor(a)",
                 ],
                 [
-                    "O CSV deve ser estruturado como: Nome da música \
-                    VÍRGULA cantor e ENTER (QUEBRA DE LINHA)",
-                    "Digite o nome da música e o cantor separados por virgula \
-                    e dê enter para incluir outra música",
+                    "O CSV deve ser estruturado como: Nome da música "
+                    "VÍRGULA cantor e ENTER (QUEBRA DE LINHA)",
+                    "Digite o nome da música e o cantor separados por virgula "
+                    "e dê enter para incluir outra música",
                 ],
             )
 
             self.confirm_csv.setText("Selecionar CSV")
 
             self.confirm_csv.setToolTip(
-                "O CSV deve ser estruturado como: Nome da música \
-                VÍRGULA cantor e ENTER (QUEBRA DE LINHA)"
+                "O CSV deve ser estruturado como: Nome da música "
+                "VÍRGULA cantor e ENTER (QUEBRA DE LINHA)"
             )
 
             self.treeview.add_headers("Itens Selecionados", ["Música", "Cantor(a)"])
@@ -266,8 +266,8 @@ class PageMany(QWidget):
             )
 
             self.text_edit.setToolTip(
-                "Digite o nome da música e o cantor separados por virgula \
-                e dê enter para incluir outra música"
+                "Digite o nome da música e o cantor separados por virgula "
+                "e dê enter para incluir outra música"
             )
 
             self.background_image_label.setText(
@@ -281,8 +281,8 @@ class PageMany(QWidget):
             )
 
             self.background_image.setToolTip(
-                "Clique para abrir o seletor de arquivo ou clique com o \
-                direito para abrir a imagem em tela inteira"
+                "Clique para abrir o seletor de arquivo ou clique com o "
+                "direito para abrir a imagem em tela inteira"
             )
 
             self.transparency_slider_label.setText(
@@ -294,8 +294,8 @@ class PageMany(QWidget):
             )
 
             self.transparency_slider.setToolTip(
-                f"Opacidade selecionada: {self.transparency_slider.value()}\n \
-                Role a barra para alterar"
+                f"Opacidade selecionada: {self.transparency_slider.value()}\n"
+                "Role a barra para alterar"
             )
 
             self.transparency_slider.valueChanged.connect(
@@ -332,10 +332,10 @@ class PageMany(QWidget):
             self.input_method_combobox.set_options(
                 ["Search Music by CSV", "Search Music by typing Name and Singer"],
                 [
-                    "The CSV must be structured as: Name of the Music COMMA \
-                    singer and ENTER (NEW LINE)",
-                    "Type the name of the music and the singer separated by comma \
-                    and enter to include another music",
+                    "The CSV must be structured as: Name of the Music COMMA "
+                    "singer and ENTER (NEW LINE)",
+                    "Type the name of the music and the singer separated by comma "
+                    "and enter to include another music",
                 ],
             )
 
@@ -348,8 +348,8 @@ class PageMany(QWidget):
             self.treeview.add_headers("Selected Items", ["Music", "Singer"])
 
             self.text_edit.setToolTip(
-                "Enter the name of the music and the singer separated by comma \
-                and enter to include another music"
+                "Enter the name of the music and the singer separated by comma "
+                "and enter to include another music"
             )
 
             self.background_image_label.setText(
