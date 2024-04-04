@@ -7,7 +7,7 @@ import io
 
 from PIL import Image
 
-from PySide6.QtWidgets import QSlider, QLabel
+from PySide6.QtWidgets import QSlider, QLabel, QWidget
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 
@@ -59,14 +59,14 @@ class TransparencySlider(QSlider):
     def update_opacity(
         self,
         status_bar_label: QLabel | None = None,
-        widgets_to_deactivate: List[QLabel] | None = None,
+        widgets_to_deactivate: List[QWidget] | None = None,
         language: Literal["pt", "en"] = "pt",
     ) -> None:
         """
         Updates the opacity of the image in the background.
 
         :param status_bar_label (QLabel): the status bar label.
-        :param widgets_to_deactivate (List): List of widgets to disable during the process.
+        :param widgets_to_deactivate (List[QWidget]): List of widgets to disable during the process.
         :param language (Literal["pt", "en"]): the language.
         """
         opacity = self.value() / 100.0

@@ -8,15 +8,24 @@ import json
 from glob import glob
 import os
 from threading import Thread
-from typing import TYPE_CHECKING, List, Literal
+from time import sleep
+from typing import TYPE_CHECKING, Callable, List, Literal
 
-from PySide6.QtCore import QMetaObject, QCoreApplication, QPoint
+from PySide6.QtCore import (
+    QMetaObject,
+    QCoreApplication,
+    QObject,
+    QPoint,
+    Signal,
+    QThread,
+)
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import (
     QMainWindow,
     QStackedWidget,
     QWidget,
     QFileDialog,
+    QProgressDialog,
     QMessageBox,
     QHeaderView,
     QLabel,
@@ -58,6 +67,10 @@ class UiPagesWidget(object):
         :param menu_bar: the menu bar.
         """
         self.mainwindow = mainwindow
+
+        self.worker = None
+        self.worker_thread = None
+        self.progress_dialog = None
 
         self.language_manager = language_manager
         self.language_manager.language_changed.connect(self.retranslate_ui)
@@ -239,7 +252,7 @@ class UiPagesWidget(object):
         self,
         transparency_slider: TransparencySlider,
         status_bar_label: QLabel,
-        widgets_to_deactivate: List = [QWidget],
+        widgets_to_deactivate: List[QWidget],
     ) -> None:
         """
         Updates the opacity of the image in the background.
@@ -431,10 +444,17 @@ class UiPagesWidget(object):
             )
             return
 
-        for i, music in enumerate(musics):
-            self._confirm(
-                self.page_many.confirm_button, self.page_many, music, singers[i]
+        self.setup_worker()
+
+        if self.worker_thread and self.worker:
+            self.worker_thread.started.connect(
+                lambda: self.worker.run( # type: ignore
+                    musics,
+                    singers,
+                )
             )
+
+            self.worker_thread.start()
 
     def _confirm_page_insert_manually(self) -> None:
         """
@@ -551,3 +571,103 @@ class UiPagesWidget(object):
         active_page.setEnabled(False)
         msg_box.exec()
         active_page.setEnabled(True)
+
+    def setup_worker(self) -> None:
+        """
+        Sets up the worker to update the progress bar for page many.
+        """
+        self.worker = WorkerPageMany(
+            self._confirm, self.page_many.confirm_button, self.page_many
+        )
+        self.worker_thread = QThread()
+
+        self.worker.moveToThread(self.worker_thread)
+
+        self.worker.finished.connect(self.on_thread_finished)
+
+        self.progress_dialog = QProgressDialog(
+            (
+                "Em Progresso..."
+                if self.menu_bar.get_selected_language() == "pt"
+                else "In Progress..."
+            ),
+            "",
+            0,
+            100,
+            self.page_many,
+        )
+
+        self.progress_dialog.setCancelButton(None)  # type: ignore
+
+        self.progress_dialog.setWindowTitle(
+            "Trabalhando..."
+            if self.menu_bar.get_selected_language() == "pt"
+            else "Working..."
+        )
+
+        self.progress_dialog.setWindowModality(Qt.WindowModality.WindowModal)
+        self.progress_dialog.show()
+
+        self.worker.progress_signal.connect(self.progress_dialog.setValue)
+
+    def on_thread_finished(self) -> None:
+        """
+        Called when the thread is finished.
+        """
+
+        if self.worker_thread and self.progress_dialog:
+            self.worker_thread.quit()
+            self.worker_thread.wait()
+
+            sleep(1)
+            self.progress_dialog.close()
+
+
+class WorkerPageMany(QObject):
+    """Worker class for page many."""
+
+    progress_signal = Signal(int)
+    finished = Signal()
+
+    def __init__(
+        self,
+        confirm_function: Callable,
+        confirm_button: QPushButton,
+        active_page: QWidget,
+    ) -> None:
+        """
+        Constructor of the worker class.
+
+        :param confirm_function (Callable): The function executed when confirm button is clicked.
+        :param confirm_button (QPushButton): The confirm button.
+        :param active_page (QWidget): The active page.
+        """
+        super().__init__()
+
+        self.confirm_function = confirm_function
+        self.confirm_button = confirm_button
+        self.active_page = active_page
+
+    def run(
+        self,
+        musics: List[str],
+        singers: List[str],
+    ) -> None:
+        """
+        Runs the worker, which will update the progress bar in a separate thread.
+        Executes the confirm function for each music in the list.
+
+        :param musics (List[str]): The list of music names.
+        :param singers (List[str]): The list of singer names.
+
+        """
+        for i, music in enumerate(musics):
+
+            current_percentage = i * 100 / len(musics)
+            self.progress_signal.emit(current_percentage)
+
+            self.confirm_function(
+                self.confirm_button, self.active_page, music, singers[i]
+            )
+
+        self.finished.emit()
