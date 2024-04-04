@@ -448,7 +448,7 @@ class UiPagesWidget(object):
 
         if self.worker_thread and self.worker:
             self.worker_thread.started.connect(
-                lambda: self.worker.run( # type: ignore
+                lambda: self.worker.run(  # type: ignore
                     musics,
                     singers,
                 )
@@ -587,9 +587,9 @@ class UiPagesWidget(object):
 
         self.progress_dialog = QProgressDialog(
             (
-                "Em Progresso..."
+                "Progresso"
                 if self.menu_bar.get_selected_language() == "pt"
-                else "In Progress..."
+                else "Progress"
             ),
             "",
             0,
@@ -597,12 +597,13 @@ class UiPagesWidget(object):
             self.page_many,
         )
 
+        self.progress_dialog.setValue(0)
         self.progress_dialog.setCancelButton(None)  # type: ignore
 
         self.progress_dialog.setWindowTitle(
-            "Trabalhando..."
+            "Fazendo os slides..."
             if self.menu_bar.get_selected_language() == "pt"
-            else "Working..."
+            else "Making the slides..."
         )
 
         self.progress_dialog.setWindowModality(Qt.WindowModality.WindowModal)
@@ -618,8 +619,6 @@ class UiPagesWidget(object):
         if self.worker_thread and self.progress_dialog:
             self.worker_thread.quit()
             self.worker_thread.wait()
-
-            sleep(1)
             self.progress_dialog.close()
 
 
@@ -659,15 +658,18 @@ class WorkerPageMany(QObject):
 
         :param musics (List[str]): The list of music names.
         :param singers (List[str]): The list of singer names.
-
         """
-        for i, music in enumerate(musics):
 
-            current_percentage = i * 100 / len(musics)
-            self.progress_signal.emit(current_percentage)
+        for i, music in enumerate(musics):
 
             self.confirm_function(
                 self.confirm_button, self.active_page, music, singers[i]
             )
+
+            current_percentage = (i + 1) * 100 // len(musics)
+
+            self.progress_signal.emit(current_percentage)
+
+        sleep(2)
 
         self.finished.emit()
