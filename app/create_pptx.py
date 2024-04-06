@@ -279,7 +279,6 @@ def create_slides(
 
     new_presentation.save(new_presentation_path)
 
-    # if method == "page_one" or method == "page_insert_manually":
     if language == "pt":
         widget.setText(f'Arquivo: "{file_name}" concluído com sucesso!')  # type: ignore
     else:

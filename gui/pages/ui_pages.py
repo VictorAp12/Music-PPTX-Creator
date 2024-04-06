@@ -7,8 +7,8 @@ import csv
 import json
 from glob import glob
 import os
+import time
 from threading import Thread
-from time import sleep
 from typing import TYPE_CHECKING, Callable, List, Literal
 
 from PySide6.QtCore import (
@@ -22,6 +22,7 @@ from PySide6.QtCore import (
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import (
     QMainWindow,
+    QApplication,
     QStackedWidget,
     QWidget,
     QFileDialog,
@@ -334,6 +335,7 @@ class UiPagesWidget(object):
             active_page.statusbar_label.setText(
                 "Buscando música..." if language == "pt" else "Searching music..."
             )
+            QApplication.processEvents()
 
             result = search_lyrics_on_genius(
                 active_page,
@@ -361,6 +363,7 @@ class UiPagesWidget(object):
                 if language == "pt"
                 else f'Music "{music} - {singer}" found, creating slide...'
             )
+            QApplication.processEvents()
 
         else:
             music, singer, lyrics, genius_image = (
@@ -369,10 +372,6 @@ class UiPagesWidget(object):
                 insert_manually_lyrics,
                 "",
             )
-
-        # tries to update the windows
-        active_page.update()
-        self.mainwindow.update()
 
         # getting the selected slide_config
         slide_config = self.get_slides_config(self.menu_bar.get_selected_style())
@@ -451,6 +450,8 @@ class UiPagesWidget(object):
                 lambda: self.worker.run(  # type: ignore
                     musics,
                     singers,
+                    self.progress_dialog,
+                    self.menu_bar.get_selected_language(),
                 )
             )
 
@@ -591,16 +592,11 @@ class UiPagesWidget(object):
                 if self.menu_bar.get_selected_language() == "pt"
                 else "Progress"
             ),
-            "",
+            "Cancelar" if self.menu_bar.get_selected_language() == "pt" else "Cancel",
             0,
             100,
-            self.page_many,
+            self.mainwindow,
         )
-
-        self.progress_dialog.setValue(0)
-        self.progress_dialog.setCancelButton(None)  # type: ignore
-        self.progress_dialog.setAutoReset(False)
-        self.progress_dialog.setAutoClose(False)
 
         self.progress_dialog.setWindowTitle(
             "Fazendo os slides..."
@@ -608,10 +604,14 @@ class UiPagesWidget(object):
             else "Making the slides..."
         )
 
-        self.progress_dialog.setWindowModality(Qt.WindowModality.WindowModal)
-        self.progress_dialog.show()
+        self.progress_dialog.setValue(0)
+        self.progress_dialog.setAutoReset(False)
+        self.progress_dialog.setAutoClose(False)
 
         self.worker.progress_signal.connect(self.progress_dialog.setValue)
+
+        self.progress_dialog.setWindowModality(Qt.WindowModality.WindowModal)
+        self.progress_dialog.show()
 
     def on_thread_finished(self) -> None:
         """
@@ -652,7 +652,9 @@ class WorkerPageMany(QObject):
     def run(
         self,
         musics: List[str],
-        singers: List[str]
+        singers: List[str],
+        progress_dialog: QProgressDialog | None = None,
+        language: Literal["pt", "en"] = "pt",
     ) -> None:
         """
         Runs the worker, which will update the progress bar in a separate thread.
@@ -660,18 +662,57 @@ class WorkerPageMany(QObject):
 
         :param musics (List[str]): The list of music names.
         :param singers (List[str]): The list of singer names.
+        :param progress_dialog (QProgressDialog, optional): The progress dialog.
+        :param language (Literal["pt", "en"], optional): The language. Defaults to "pt".
         """
 
         for i, music in enumerate(musics):
+
+            if self.canceled(progress_dialog, language):
+                break
 
             self.confirm_function(
                 self.confirm_button, self.active_page, music, singers[i]
             )
 
+            if self.canceled(progress_dialog, language):
+                break
+
             current_percentage = (i + 1) * 100 // len(musics)
 
             self.progress_signal.emit(current_percentage)
 
-        sleep(1)
+        time.sleep(1)
 
         self.finished.emit()
+
+    def canceled(
+        self,
+        progress_dialog: QProgressDialog | None = None,
+        language: Literal["pt", "en"] = "pt",
+    ) -> bool:
+        """
+        Called when the thread is canceled.
+
+        :param progress_dialog (QProgressDialog, optional): The progress dialog.
+        :param language (Literal["pt", "en"], optional): The language. Defaults to "pt".
+
+        :return (bool): True if the thread was canceled, False otherwise.
+        """
+        time.sleep(1)
+
+        QApplication.processEvents()
+
+        if progress_dialog:
+            if progress_dialog.wasCanceled():
+                QMessageBox.warning(
+                    self.active_page,
+                    "Atenção" if language == "pt" else "Attention",
+                    (
+                        "A operação foi cancelada."
+                        if language == "pt"
+                        else "The operation was canceled."
+                    ),
+                )
+                return True
+        return False
