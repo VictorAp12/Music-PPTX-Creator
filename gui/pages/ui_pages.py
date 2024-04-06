@@ -666,6 +666,9 @@ class WorkerPageMany(QObject):
         :param language (Literal["pt", "en"], optional): The language. Defaults to "pt".
         """
 
+        if self.canceled(progress_dialog, language):
+            return
+
         for i, music in enumerate(musics):
 
             if self.canceled(progress_dialog, language):
