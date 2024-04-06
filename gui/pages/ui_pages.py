@@ -599,6 +599,8 @@ class UiPagesWidget(object):
 
         self.progress_dialog.setValue(0)
         self.progress_dialog.setCancelButton(None)  # type: ignore
+        self.progress_dialog.setAutoReset(False)
+        self.progress_dialog.setAutoClose(False)
 
         self.progress_dialog.setWindowTitle(
             "Fazendo os slides..."
@@ -650,7 +652,7 @@ class WorkerPageMany(QObject):
     def run(
         self,
         musics: List[str],
-        singers: List[str],
+        singers: List[str]
     ) -> None:
         """
         Runs the worker, which will update the progress bar in a separate thread.
@@ -670,6 +672,6 @@ class WorkerPageMany(QObject):
 
             self.progress_signal.emit(current_percentage)
 
-        sleep(2)
+        sleep(1)
 
         self.finished.emit()
