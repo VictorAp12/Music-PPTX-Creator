@@ -73,6 +73,9 @@ class MenuBar(QMenuBar):
         # creates the "Escolher Pasta de Destino"
         self.menu_choose_folder = self.menu.addAction("Escolher Pasta de Destino")
 
+        if not Path("files").absolute().exists():
+            Path("files").absolute().mkdir()
+
         self.menu_choose_folder.triggered.connect(self._choose_folder)
 
         # creates the "Escolher Chave de API"

@@ -38,6 +38,12 @@ Conteúdo:
 
 ## Instalação
 
+  ### Como executável do windows
+
+  Simplesmente baixe o arquivo.exe através deste link e comece a usar a aplicação (Para windows 64 bits, recomendado windows 11): [Download Music PPTX Creator](https://github.com/VictorAp12/Music-PPTX-Creator/raw/main/Music%20PPTX%20Creator%20setup.exe)
+
+  ### Como um projeto Python
+
   - Baixe o projeto como zip ou usando gitclone https://github.com/VictorAp12/Music-PPTX-Creator.git
 
   - Crie o ambiente virtual na pasta do projeto:

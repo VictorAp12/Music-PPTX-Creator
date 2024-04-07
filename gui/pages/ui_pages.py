@@ -262,8 +262,6 @@ class UiPagesWidget(object):
         """
         language = self.menu_bar.get_selected_language()
 
-        language = "pt" if language == "Português" else "en"
-
         self.modify_thread = Thread(
             target=transparency_slider.update_opacity,
             args=(status_bar_label, widgets_to_deactivate, language),

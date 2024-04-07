@@ -3,6 +3,9 @@ query_test.txt
 teste.py
 venv
 files
+config innosetup.iss
+config autopytoexe.json
+output
 app/images
 app/slides styles
 settings/.env
